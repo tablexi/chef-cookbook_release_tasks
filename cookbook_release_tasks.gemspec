@@ -1,4 +1,6 @@
 # coding: utf-8
+# frozen_string_literal: true
+
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "cookbook_release_tasks/version"
@@ -9,8 +11,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Table XI"]
   spec.email         = ["sysadmin@tablexi.com"]
 
-  spec.summary       = %q{Rake tasks to assist with releasing your Chef cookbook.}
-  spec.description   = %q{Rake tasks to assist with releasing your Chef cookbook.}
+  spec.summary       = "Rake tasks to assist with releasing your Chef cookbook."
+  spec.description   = "Rake tasks to assist with releasing your Chef cookbook."
   spec.homepage      = "https://github.com/tablexi/cookbook_release_tasks"
   spec.license       = "MIT"
 

@@ -12,8 +12,8 @@ module CookbookReleaseTasks
       repo = options[:repo] || nil
 
       @github = CookbookReleaseTasks::Github.new(repo, access_token)
-      @next_changelog = options[:next_changelog] || 'next_changelog.tmp.md'
       @semver = CookbookReleaseTasks::SemVer.new(_major)
+      @next_changelog = options[:next_changelog] || "next_changelog.tmp.md"
     end
 
     def create_tasks!

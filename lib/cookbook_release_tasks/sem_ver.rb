@@ -1,5 +1,9 @@
-module CookbookReleaseTasks
+# frozen_string_literal: true
+
+module CookbookRelease
+
   class SemVer
+
     def initialize(version_major)
       @version_major = version_major
     end
@@ -19,11 +23,13 @@ module CookbookReleaseTasks
     end
 
     def minor
-      ENV['VERSION_MINOR'] || 0
+      ENV["VERSION_MINOR"] || 0
     end
 
     def patch
-      ENV['VERSION_PATCH'] || 0
+      ENV["VERSION_PATCH"] || 0
     end
+
   end
+
 end

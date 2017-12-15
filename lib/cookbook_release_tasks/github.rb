@@ -1,10 +1,14 @@
-require 'octokit'
+# frozen_string_literal: true
 
-module CookbookReleaseTasks
+require "octokit"
+
+module CookbookRelease
+
   class Github
+
     def initialize(repo = nil, access_token = nil)
-      @repo = repo || ENV['GITHUB_REPO']
-      @client = Octokit::Client.new(access_token: access_token || ENV['GITHUB_TOKEN'])
+      @repo = repo || ENV["GITHUB_REPO"]
+      @client = Octokit::Client.new(access_token: access_token || ENV["GITHUB_TOKEN"])
     end
 
     def create_release(tag, options = {})
@@ -21,13 +25,14 @@ module CookbookReleaseTasks
       end
     end
 
-    def create_update_pr(title, body, base = 'master', head = 'develop')
-      if issue_num = get_pr(base, head, title)
+    def create_update_pr(title, body, base = "master", head = "develop")
+      issue_num = get_pr(base, head, title)
+      if issue_num
         @client.update_pull_request(
           @repo,
           issue_num,
           title,
-          body
+          body,
         )
       else
         begin
@@ -36,10 +41,10 @@ module CookbookReleaseTasks
             base,
             head,
             title,
-            body
+            body,
           )
         rescue Octokit::UnprocessableEntity
-          puts 'Pull request unnecessary'
+          puts "Pull request unnecessary"
         end
       end
     end
@@ -56,7 +61,7 @@ module CookbookReleaseTasks
           @repo,
           base: base,
           head: head,
-          state: 'open',
+          state: "open",
         )
 
         prs.each do |pr|
@@ -64,16 +69,16 @@ module CookbookReleaseTasks
         end
       rescue Octokit::NotFound
       end
-      return false
+      false
     end
 
     def target_commitish_exist?(sha)
-      begin
-        @client.commit(@repo, sha)
-      rescue Octokit::NotFound
-        puts "target_commitsh: #{sha} not on remote"
-        return false
-      end
+      @client.commit(@repo, sha)
+    rescue Octokit::NotFound
+      puts "target_commitsh: #{sha} not on remote"
+      return false
     end
+
   end
+
 end
