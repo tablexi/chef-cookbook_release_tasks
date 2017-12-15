@@ -14,13 +14,13 @@ module CookbookRelease
 
   class RakeTasks
 
-    def initialize(_major, options = {})
+    def initialize(major_version, options = {})
       access_token = options[:access_token] || nil
       repo = options[:repo] || nil
 
       @github = CookbookRelease::Github.new(repo, access_token)
       @next_changelog = options[:next_changelog] || "next_changelog.tmp.md"
-      @semver = CookbookRelease::SemVer.new(_major)
+      @semver = CookbookRelease::SemVer.new(major_version)
     end
 
     def create_tasks!
