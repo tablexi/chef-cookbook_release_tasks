@@ -14,3 +14,16 @@ rake release:supermarket   # Chef supermarket release
 rake stove:setup           # Setup stove using env variables
 rake version_pull_request  # Create/Update github release pull request
 ```
+
+## Usage
+
+In your Rakefile, add:
+
+```
+require "cookbook_release"
+
+CookbookRelease::RakeTasks.new(10).create_tasks!
+```
+
+where `10` is the major version of the cookbook
+
