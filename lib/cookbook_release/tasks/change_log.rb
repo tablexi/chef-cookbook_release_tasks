@@ -20,7 +20,7 @@ module CookbookRelease
       end
 
       def next_release
-        desc "Changelog for next only"
+        desc "Changelog for next version only"
         task :next do
           options =  "--unreleased-only --base '' --output #{@next_changelog} --future-release #{@future_release} > /dev/null"
 
@@ -38,7 +38,7 @@ module CookbookRelease
       end
 
       def update
-        desc "Update changelog with supplied "
+        desc "Update changelog"
         task :update do
           sh "bundle exec github_changelog_generator --future-release #{@future_release} > /dev/null"
         end

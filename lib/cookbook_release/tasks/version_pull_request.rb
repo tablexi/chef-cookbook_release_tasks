@@ -14,7 +14,7 @@ module CookbookRelease
       end
 
       def tasks!
-        desc "Create/Update release pull request"
+        desc "Create/Update github release pull request"
         task version_pull_request: ["changelog:next"] do
           changelog = IO.read(@next_changelog).split("\n").drop(2).join("\n")
 

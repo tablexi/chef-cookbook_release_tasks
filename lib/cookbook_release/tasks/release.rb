@@ -46,7 +46,7 @@ module CookbookRelease
       end
 
       def supermarket
-        desc "Chef supermarket upload"
+        desc "Chef supermarket release"
         task supermarket: ["stove:setup", "changelog:update"] do
           sh "echo '#{@semver.number}' > VERSION"
           sh "bundle exec stove --no-git"
