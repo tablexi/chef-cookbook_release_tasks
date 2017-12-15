@@ -1,19 +1,21 @@
-require "cookbook_release_tasks/version"
-require "cookbook_release_tasks/github"
-require "cookbook_release_tasks/sem_ver"
 require 'rake' unless defined? Rake
 
-module CookbookReleaseTasks
-  class RakeTask
+require "cookbook_release/github"
+require "cookbook_release/sem_ver"
+require "cookbook_release/version"
+module CookbookRelease
+
+  class RakeTasks
+
     include Rake::DSL
 
     def initialize(_major, options = {})
       access_token = options[:access_token] || nil
       repo = options[:repo] || nil
 
-      @github = CookbookReleaseTasks::Github.new(repo, access_token)
-      @semver = CookbookReleaseTasks::SemVer.new(_major)
+      @github = CookbookRelease::Github.new(repo, access_token)
       @next_changelog = options[:next_changelog] || "next_changelog.tmp.md"
+      @semver = CookbookRelease::SemVer.new(_major)
     end
 
     def create_tasks!
