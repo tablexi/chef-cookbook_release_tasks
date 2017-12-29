@@ -15,8 +15,8 @@ module CookbookRelease
   class RakeTasks
 
     def initialize(major_version, options = {})
-      access_token = options[:access_token] || nil
-      repo = options[:repo] || nil
+      access_token = options[:access_token] || ENV["GITHUB_TOKEN"]
+      repo = options[:repo] || ENV["GITHUB_REPO"]
 
       @github = CookbookRelease::Github.new(repo, access_token)
       @next_changelog = options[:next_changelog] || "next_changelog.tmp.md"

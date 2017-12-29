@@ -6,9 +6,9 @@ module CookbookRelease
 
   class Github
 
-    def initialize(repo = nil, access_token = nil)
-      @repo = repo || ENV["GITHUB_REPO"]
-      @client = Octokit::Client.new(access_token: access_token || ENV["GITHUB_TOKEN"])
+    def initialize(repo, access_token)
+      @repo = repo
+      @client = Octokit::Client.new(access_token: access_token)
     end
 
     def create_release(tag, options = {})
@@ -18,11 +18,9 @@ module CookbookRelease
       begin
         @client.create_release(@repo, tag, options) if target_commitish_exist?(options[:target_commitish])
       rescue Octokit::UnprocessableEntity
-        puts "Release already exists!"
-        exit
-      else
-        puts "Successfully released"
+        raise "Release already exists!"
       end
+      puts "Successfully released"
     end
 
     def create_update_pr(title, body, base = "master", head = "develop")
@@ -67,6 +65,7 @@ module CookbookRelease
         prs.each do |pr|
           return pr.number if pr.title == title
         end
+      # Ignore error, if there are no PR's to return.
       rescue Octokit::NotFound
       end
       false

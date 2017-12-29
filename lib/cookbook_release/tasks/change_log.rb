@@ -27,8 +27,7 @@ module CookbookRelease
           sh "bundle exec github_changelog_generator #{options}"
 
           log = IO
-                .read(@next_changelog) # Read Changelog
-                .split("\n") # convert to array for easier parsing
+                .readlines(@next_changelog) # Read Changelog
                 .drop(3).unshift("Release #{@future_release}\n") # Update header
                 .reverse.drop(1).reverse # Remove footer
                 .join("\n") # convert back to string
