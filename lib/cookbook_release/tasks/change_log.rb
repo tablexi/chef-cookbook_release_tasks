@@ -8,8 +8,9 @@ module CookbookRelease
 
       include Rake::DSL
 
-      def initialize(future_release)
+      def initialize(future_release, next_changelog)
         @future_release = ENV["FUTURE_RELEASE"] || future_release
+        @next_changelog = next_changelog
       end
 
       def tasks!

@@ -21,11 +21,12 @@ module CookbookRelease
       @github = CookbookRelease::Github.new(repo, access_token)
       @next_changelog = options[:next_changelog] || "next_changelog.tmp.md"
       @semver = CookbookRelease::SemVer.new(major_version)
+      @git_number = ENV["FUTURE_RELEASE"] || @semver.git_number
     end
 
     def create_tasks!
       CookbookRelease::Tasks::Berkshelf.new.tasks!
-      CookbookRelease::Tasks::ChangeLog.new(@semver.git_number).tasks!
+      CookbookRelease::Tasks::ChangeLog.new(@git_number, @next_changelog).tasks!
       CookbookRelease::Tasks::Release.new(@github, @next_changelog, @semver).tasks!
       CookbookRelease::Tasks::Stove.new.tasks!
       CookbookRelease::Tasks::VersionPullRequest.new(@next_changelog).tasks!
