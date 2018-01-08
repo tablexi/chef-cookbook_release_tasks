@@ -24,7 +24,7 @@ module CookbookRelease
 
       def chef_server
         desc "Chef server release"
-        task chef_server: ["berkshelf:setup"] do
+        task chef_server: ["berkshelf:setup", "berkshelf:install"] do
           sh "echo '#{@semver.number}' > VERSION"
           sh "bundle exec berks upload"
           sh "rm VERSION"
