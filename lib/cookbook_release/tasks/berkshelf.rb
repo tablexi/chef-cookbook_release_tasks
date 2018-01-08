@@ -10,6 +10,15 @@ module CookbookRelease
       def tasks!
         namespace :berkshelf do
           setup
+          install
+        end
+      end
+
+      def install
+        task "install" do
+          next if File.exist?("Berkshelf.lock")
+
+          sh "bundle exec berks install"
         end
       end
 
