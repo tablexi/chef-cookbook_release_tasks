@@ -8,7 +8,8 @@ module CookbookRelease
 
       include Rake::DSL
 
-      def initialize(github, next_changelog, semver)
+      def initialize(github, next_changelog, semver, chef_env = nil)
+        @chef_env = chef_env
         @github = github
         @next_changelog = next_changelog
         @semver = semver
@@ -16,9 +17,20 @@ module CookbookRelease
 
       def tasks!
         namespace :release do
+          chef_env
           chef_server
           github
           supermarket
+        end
+      end
+
+      def chef_env
+        desc "Chef environment release"
+        task chef_environment: ["berkshelf:setup", "berkshelf:install"] do
+          next unless @chef_env
+          sh "echo '#{@semver.number}' > VERSION"
+          sh "bundle exec berks apply #{@chef_env}"
+          sh "rm VERSION"
         end
       end
 
