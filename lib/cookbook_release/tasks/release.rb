@@ -26,9 +26,10 @@ module CookbookRelease
 
       def chef_env
         desc "Chef environment release"
-        task chef_environment: ["berkshelf:setup", "berkshelf:install"] do
+        task chef_environment: ["berkshelf:setup"] do
           next unless @chef_env
           sh "echo '#{@semver.number}' > VERSION"
+          Rake::Task["berkshelf:install"].execute
           sh "bundle exec berks apply #{@chef_env}"
           sh "rm VERSION"
         end
@@ -36,8 +37,9 @@ module CookbookRelease
 
       def chef_server
         desc "Chef server release"
-        task chef_server: ["berkshelf:setup", "berkshelf:install"] do
+        task chef_server: ["berkshelf:setup"] do
           sh "echo '#{@semver.number}' > VERSION"
+          Rake::Task["berkshelf:install"].execute
           sh "bundle exec berks upload"
           sh "rm VERSION"
         end
