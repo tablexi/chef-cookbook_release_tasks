@@ -42,7 +42,7 @@ module CookbookRelease
             if ENV["CHEF_CLIENT_PEM"]
               sh "mkdir -p #{File.dirname(client_key)}"
               # Make sure EOL isn't getting escaped
-              File.write(client_key, ENV["CHEF_CLIENT_PEM"].gsub('\n',"\n"))
+              File.write(File.expand_path(client_key), ENV["CHEF_CLIENT_PEM"].gsub('\n',"\n"))
             else
               raise "Chef client key missing #{client_key}"
             end
