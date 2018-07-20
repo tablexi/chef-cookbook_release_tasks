@@ -58,7 +58,7 @@ module CookbookRelease
 
           require "json"
 
-          File.write(File.absolute_path(berkshelf_config), config.to_json)
+          File.write(File.expand_path(berkshelf_config), config.to_json)
         end
       end
 
