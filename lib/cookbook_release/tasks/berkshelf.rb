@@ -25,7 +25,7 @@ module CookbookRelease
       def setup
         desc "Setup berkshelf using env variables"
         task "setup" do
-          berkshelf_config = File.join(ENV["HOME"], ".berkshelf/config.json")
+          berkshelf_config = ENV["BERKSHELF_CONFIG"] || File.join(ENV["HOME"], ".berkshelf", "config.json")
           if File.exist?(berkshelf_config)
             puts "Berkshelf config file already exists"
             next
