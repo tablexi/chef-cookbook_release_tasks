@@ -26,23 +26,17 @@ module CookbookRelease
         desc "Setup berkshelf using env variables"
         task "setup" do
           berkshelf_config = ENV["BERKSHELF_CONFIG"] || File.join(ENV["HOME"], ".berkshelf", "config.json")
-          if File.exist?(berkshelf_config)
-            puts "Berkshelf config file already exists"
-            next
-          end
-
-          sh "mkdir -p #{File.dirname(berkshelf_config)}"
-
           chef_server = ENV["CHEF_SERVER"] || "https://chef.tablexi.com/organizations/tablexi"
           node_name = ENV["NODE_NAME"] || "ci"
           client_key = ENV["CLIENT_KEY"] || "/ci.pem"
+          pem_contents = ENV["CHEF_CLIENT_PEM"]
 
           unless File.exist?(client_key)
             # On CI, also convert ENV variable to pem file
-            if ENV["CHEF_CLIENT_PEM"]
+            if pem_contents
               sh "mkdir -p #{File.dirname(client_key)}"
               # Make sure EOL isn't getting escaped
-              File.write(File.expand_path(client_key), ENV["CHEF_CLIENT_PEM"].gsub('\n',"\n"))
+              File.write(File.expand_path(client_key), pem_contents.gsub('\n',"\n"))
             else
               raise "Chef client key missing #{client_key}"
             end
@@ -56,9 +50,13 @@ module CookbookRelease
             },
           }
 
-          require "json"
-
-          File.write(File.expand_path(berkshelf_config), config.to_json)
+          if File.exist?(berkshelf_config)
+            puts "Berkshelf config file already exists"
+          else
+            sh "mkdir -p #{File.dirname(berkshelf_config)}"
+            require "json"
+            File.write(File.expand_path(berkshelf_config), config.to_json)
+          end
         end
       end
 
