@@ -27,7 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop"
 
   spec.add_dependency "berkshelf"
-  spec.add_dependency "github_changelog_generator"
+  # 1.15 requires github user and project set on every request
+  spec.add_dependency "github_changelog_generator", "~> 1.14.0"
   spec.add_dependency "rake"
   spec.add_dependency "stove"
 end
